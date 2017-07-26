@@ -8,24 +8,32 @@
 
 /* Begin PBXBuildFile section */
 		C42D5B1F1F27833000D4A0BE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C42D5B1E1F27833000D4A0BE /* AppDelegate.m */; };
-		C42D5B221F27833000D4A0BE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42D5B211F27833000D4A0BE /* ViewController.m */; };
 		C42D5B251F27833000D4A0BE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C42D5B231F27833000D4A0BE /* Main.storyboard */; };
 		C42D5B271F27833000D4A0BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C42D5B261F27833000D4A0BE /* Assets.xcassets */; };
 		C42D5B2A1F27833000D4A0BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C42D5B281F27833000D4A0BE /* LaunchScreen.storyboard */; };
 		C42D5B2D1F27833000D4A0BE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C42D5B2C1F27833000D4A0BE /* main.m */; };
+		C48026931F28794800B7EB01 /* Inceptionv3.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = C48026921F28793D00B7EB01 /* Inceptionv3.mlmodel */; };
+		C48026941F28795400B7EB01 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C48026901F28793C00B7EB01 /* ViewController.m */; };
+		C480269C1F288E3B00B7EB01 /* CommonTools.m in Sources */ = {isa = PBXBuildFile; fileRef = C480269B1F288E3B00B7EB01 /* CommonTools.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C42D5B1A1F27833000D4A0BE /* TSOG CoreML.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TSOG CoreML.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C42D5B1D1F27833000D4A0BE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C42D5B1E1F27833000D4A0BE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		C42D5B201F27833000D4A0BE /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		C42D5B211F27833000D4A0BE /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		C42D5B241F27833000D4A0BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C42D5B261F27833000D4A0BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C42D5B291F27833000D4A0BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C42D5B2B1F27833000D4A0BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C42D5B2C1F27833000D4A0BE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C480268B1F2845DC00B7EB01 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		C480268C1F28466400B7EB01 /* CoreML.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreML.framework; path = System/Library/Frameworks/CoreML.framework; sourceTree = SDKROOT; };
+		C480268D1F28466A00B7EB01 /* Vision.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Vision.framework; path = System/Library/Frameworks/Vision.framework; sourceTree = SDKROOT; };
+		C480268F1F28793C00B7EB01 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		C48026901F28793C00B7EB01 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		C48026921F28793D00B7EB01 /* Inceptionv3.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Inceptionv3.mlmodel; sourceTree = "<group>"; };
+		C480269A1F288E3B00B7EB01 /* CommonTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonTools.h; sourceTree = "<group>"; };
+		C480269B1F288E3B00B7EB01 /* CommonTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonTools.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +52,7 @@
 			children = (
 				C42D5B1C1F27833000D4A0BE /* TSOG CoreML */,
 				C42D5B1B1F27833000D4A0BE /* Products */,
+				C480268A1F2845DC00B7EB01 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,10 +67,11 @@
 		C42D5B1C1F27833000D4A0BE /* TSOG CoreML */ = {
 			isa = PBXGroup;
 			children = (
+				C48026991F288E2800B7EB01 /* Common */,
+				C48026911F28793C00B7EB01 /* Resources */,
+				C480268E1F28793C00B7EB01 /* ViewControllers */,
 				C42D5B1D1F27833000D4A0BE /* AppDelegate.h */,
 				C42D5B1E1F27833000D4A0BE /* AppDelegate.m */,
-				C42D5B201F27833000D4A0BE /* ViewController.h */,
-				C42D5B211F27833000D4A0BE /* ViewController.m */,
 				C42D5B231F27833000D4A0BE /* Main.storyboard */,
 				C42D5B261F27833000D4A0BE /* Assets.xcassets */,
 				C42D5B281F27833000D4A0BE /* LaunchScreen.storyboard */,
@@ -69,6 +79,42 @@
 				C42D5B2C1F27833000D4A0BE /* main.m */,
 			);
 			path = "TSOG CoreML";
+			sourceTree = "<group>";
+		};
+		C480268A1F2845DC00B7EB01 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C480268D1F28466A00B7EB01 /* Vision.framework */,
+				C480268C1F28466400B7EB01 /* CoreML.framework */,
+				C480268B1F2845DC00B7EB01 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C480268E1F28793C00B7EB01 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				C480268F1F28793C00B7EB01 /* ViewController.h */,
+				C48026901F28793C00B7EB01 /* ViewController.m */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		C48026911F28793C00B7EB01 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C48026921F28793D00B7EB01 /* Inceptionv3.mlmodel */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		C48026991F288E2800B7EB01 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				C480269A1F288E3B00B7EB01 /* CommonTools.h */,
+				C480269B1F288E3B00B7EB01 /* CommonTools.m */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,8 +187,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C42D5B221F27833000D4A0BE /* ViewController.m in Sources */,
 				C42D5B2D1F27833000D4A0BE /* main.m in Sources */,
+				C48026931F28794800B7EB01 /* Inceptionv3.mlmodel in Sources */,
+				C48026941F28795400B7EB01 /* ViewController.m in Sources */,
+				C480269C1F288E3B00B7EB01 /* CommonTools.m in Sources */,
 				C42D5B1F1F27833000D4A0BE /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -318,6 +366,7 @@
 				C42D5B321F27833000D4A0BE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
