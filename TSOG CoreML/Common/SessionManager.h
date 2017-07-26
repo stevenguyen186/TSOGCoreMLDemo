@@ -14,6 +14,6 @@
 
 + (SessionManager *)sharedInstance;
 
-- (void)addIdentifiedObject:(NSString *)objString;
+- (BOOL)addIdentifiedObject:(NSString *)objString;
 
 @end

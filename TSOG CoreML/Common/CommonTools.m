@@ -27,4 +27,11 @@
     [viewController presentViewController:controller animated:YES completion:nil];
 }
 
++ (NSString *)capitalizeFirstLetterOnlyOfString:(NSString *) sourceString {
+    NSMutableString *result = [sourceString lowercaseString].mutableCopy;
+    [result replaceCharactersInRange:NSMakeRange(0, 1) withString:[[result substringToIndex:1] capitalizedString]];
+    
+    return result;
+}
+
 @end

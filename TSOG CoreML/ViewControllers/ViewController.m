@@ -28,6 +28,7 @@
 
     __weak IBOutlet UILabel *lbResult;
     __weak IBOutlet UIView *previewView;
+    __weak IBOutlet UILabel *animatedText;
     
     BOOL foundingObj;
 }
@@ -201,23 +202,6 @@
             // Found object
             [self handleFoundObject:firstObj];
         }
-        
-//        NSMutableArray *listObjects = [NSMutableArray array];
-//        for (VNClassificationObservation *observation in request.results) {
-//            if (observation.confidence > kRecognitionThreshold) {
-//                [listObjects addObject:observation];
-//            }
-//        }
-//
-//        NSString *resultText = @"";
-//        for (VNClassificationObservation *observation in listObjects) {
-//            NSLog(@"-------DETECT object:%@ threshold:%f", observation.identifier, observation.confidence);
-//            resultText = [NSString stringWithFormat:@"%@ %@(%f)", resultText, observation.identifier, observation.confidence];
-//        }
-//
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            lbResult.text = resultText;
-//        });
     }];
     
     classificationRequest.imageCropAndScaleOption = VNImageCropAndScaleOptionCenterCrop;
@@ -260,18 +244,54 @@
         return;
     }
     // just get first name
-    NSString *identifiedObj = nameArray[0];
+    NSString *identifiedObj = [CommonTools capitalizeFirstLetterOnlyOfString:nameArray[0]];
     
-    [[SessionManager sharedInstance] addIdentifiedObject:identifiedObj];
-    
-    // Show text on screen
-    dispatch_async(dispatch_get_main_queue(), ^{
-        lbResult.text = identifiedObj;
-    });
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    if ([[SessionManager sharedInstance] addIdentifiedObject:identifiedObj]) {
+        // Show text on screen
+        dispatch_async(dispatch_get_main_queue(), ^{
+            lbResult.text = identifiedObj;
+            [self showAnimatedString:identifiedObj];
+        });
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            foundingObj = NO;
+        });
+    } else {
         foundingObj = NO;
-    });
+    }
+}
+
+- (void)showAnimatedString:(NSString *)animatedString {
+    CGSize windowSize = [UIScreen mainScreen].bounds.size;
+    
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    
+    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, windowSize.width, windowSize.height)];
+    CGRect oldFrame = animatedText.frame;
+    UILabel *animatedLabel = [[UILabel alloc] initWithFrame:oldFrame];
+    animatedLabel.text = animatedString;
+    animatedLabel.textColor = [UIColor whiteColor];
+    [animatedLabel setFont:[UIFont boldSystemFontOfSize:30.0]];
+    [animatedLabel setMinimumScaleFactor:0.2];
+    animatedLabel.textAlignment = NSTextAlignmentCenter;
+    [backgroundView addSubview:animatedLabel];
+    [window addSubview:backgroundView];
+    
+    // animation
+    backgroundView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.0];
+    CGFloat minWidth = 50.0;
+    CGFloat maxWidth = 300.0;
+    animatedLabel.frame = CGRectMake((windowSize.width - minWidth)/2, (windowSize.height - 80.0)/2, minWidth, 80.0);
+    [UIView animateWithDuration:0.3 animations:^{
+        backgroundView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.7];
+        animatedLabel.frame = CGRectMake((windowSize.width - maxWidth)/2, (windowSize.height - 80.0)/2, maxWidth, 80.0);
+    } completion:^(BOOL finished) {
+        if (finished) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [backgroundView removeFromSuperview];
+            });
+        }
+    }];
 }
 
 @end

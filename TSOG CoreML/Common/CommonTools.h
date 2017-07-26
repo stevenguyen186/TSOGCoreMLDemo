@@ -15,4 +15,6 @@
                                 withTitle:(NSString *)title
                                   message:(NSString *)message;
 
++ (NSString *)capitalizeFirstLetterOnlyOfString:(NSString *) sourceString;
+
 @end

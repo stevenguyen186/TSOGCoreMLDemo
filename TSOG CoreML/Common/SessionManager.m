@@ -21,17 +21,24 @@
     return _instance;
 }
 
-- (void)addIdentifiedObject:(NSString *)objString {
+- (BOOL)addIdentifiedObject:(NSString *)objString {
     // Get first character
-    NSString *firstCharacter = [[objString substringToIndex:1] capitalizedString];
+    NSString *firstCharacter = [objString substringToIndex:1];
     
     NSMutableDictionary *collection = [self.identifiedObjects objectForKey:firstCharacter];
     if (collection) {
-        [collection setObject:objString forKey:objString];
+        if ([collection objectForKey:objString]) {
+            return NO;
+        } else {
+            [collection setObject:objString forKey:objString];
+            [self.identifiedObjects setObject:collection forKey:firstCharacter];
+            return YES;
+        }
     } else {
         collection = [NSMutableDictionary dictionaryWithObjectsAndKeys:objString, objString, nil];
+        [self.identifiedObjects setObject:collection forKey:firstCharacter];
+        return YES;
     }
-    [self.identifiedObjects setObject:collection forKey:firstCharacter];
 }
 
 @end
