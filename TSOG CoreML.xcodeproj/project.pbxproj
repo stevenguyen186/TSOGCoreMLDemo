@@ -15,6 +15,8 @@
 		C48026931F28794800B7EB01 /* Inceptionv3.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = C48026921F28793D00B7EB01 /* Inceptionv3.mlmodel */; };
 		C48026941F28795400B7EB01 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C48026901F28793C00B7EB01 /* ViewController.m */; };
 		C480269C1F288E3B00B7EB01 /* CommonTools.m in Sources */ = {isa = PBXBuildFile; fileRef = C480269B1F288E3B00B7EB01 /* CommonTools.m */; };
+		C4FF1FC01F2894E4007428CD /* SessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C4FF1FBF1F2894E4007428CD /* SessionManager.m */; };
+		C4FF1FC31F289DDA007428CD /* IdentifiedObjectListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4FF1FC21F289DDA007428CD /* IdentifiedObjectListViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,11 @@
 		C48026921F28793D00B7EB01 /* Inceptionv3.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Inceptionv3.mlmodel; sourceTree = "<group>"; };
 		C480269A1F288E3B00B7EB01 /* CommonTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonTools.h; sourceTree = "<group>"; };
 		C480269B1F288E3B00B7EB01 /* CommonTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonTools.m; sourceTree = "<group>"; };
+		C4FF1FBD1F28944D007428CD /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		C4FF1FBE1F2894E4007428CD /* SessionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SessionManager.h; sourceTree = "<group>"; };
+		C4FF1FBF1F2894E4007428CD /* SessionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SessionManager.m; sourceTree = "<group>"; };
+		C4FF1FC11F289DDA007428CD /* IdentifiedObjectListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdentifiedObjectListViewController.h; sourceTree = "<group>"; };
+		C4FF1FC21F289DDA007428CD /* IdentifiedObjectListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IdentifiedObjectListViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +103,8 @@
 			children = (
 				C480268F1F28793C00B7EB01 /* ViewController.h */,
 				C48026901F28793C00B7EB01 /* ViewController.m */,
+				C4FF1FC11F289DDA007428CD /* IdentifiedObjectListViewController.h */,
+				C4FF1FC21F289DDA007428CD /* IdentifiedObjectListViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -111,8 +120,11 @@
 		C48026991F288E2800B7EB01 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				C4FF1FBD1F28944D007428CD /* Constants.h */,
 				C480269A1F288E3B00B7EB01 /* CommonTools.h */,
 				C480269B1F288E3B00B7EB01 /* CommonTools.m */,
+				C4FF1FBE1F2894E4007428CD /* SessionManager.h */,
+				C4FF1FBF1F2894E4007428CD /* SessionManager.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -189,8 +201,10 @@
 			files = (
 				C42D5B2D1F27833000D4A0BE /* main.m in Sources */,
 				C48026931F28794800B7EB01 /* Inceptionv3.mlmodel in Sources */,
+				C4FF1FC01F2894E4007428CD /* SessionManager.m in Sources */,
 				C48026941F28795400B7EB01 /* ViewController.m in Sources */,
 				C480269C1F288E3B00B7EB01 /* CommonTools.m in Sources */,
+				C4FF1FC31F289DDA007428CD /* IdentifiedObjectListViewController.m in Sources */,
 				C42D5B1F1F27833000D4A0BE /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

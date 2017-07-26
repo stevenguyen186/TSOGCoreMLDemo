@@ -8,13 +8,14 @@
 
 #import "ViewController.h"
 #import "Inceptionv3.h"
-#import "Resnet50.h"
 #import "CommonTools.h"
+#import "Constants.h"
+#import "IdentifiedObjectListViewController.h"
+#import "SessionManager.h"
 
 @import AVFoundation;
 @import CoreML;
 @import Vision;
-
 
 @interface ViewController () <AVCaptureVideoDataOutputSampleBufferDelegate> {
     AVCaptureSession *session;
@@ -24,10 +25,11 @@
     AVCaptureVideoPreviewLayer *previewLayer;
     CAGradientLayer *gradientLayer;
     NSArray *visionRequests;
-    CGFloat recognitionThreshold;
-    
+
     __weak IBOutlet UILabel *lbResult;
     __weak IBOutlet UIView *previewView;
+    
+    BOOL foundingObj;
 }
 
 @end
@@ -52,6 +54,12 @@
     [self setupObserver];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self deviceOrientationDidChange:nil];
+}
+
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
@@ -70,6 +78,13 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Button Handler
+- (IBAction)btnGotoListClicked:(id)sender {
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    IdentifiedObjectListViewController *iOLVC = [sb instantiateViewControllerWithIdentifier:@"IdentifiedObjectListViewController"];
+    [self.navigationController pushViewController:iOLVC animated:YES];
 }
 
 #pragma mark - Update preview layer when orientation changed
@@ -163,6 +178,13 @@
     // Create request to classify object
     VNCoreMLRequest *classificationRequest = [[VNCoreMLRequest alloc] initWithModel:inceptionv3Model completionHandler:^(VNRequest * _Nonnull request, NSError * _Nullable error) {
         // Handle the response
+        
+        // Check found object
+        if (foundingObj) {
+            return;
+        }
+        
+        // Check error
         if (error) {
             NSLog(@"--->ERROR: %@", error);
             return;
@@ -173,22 +195,29 @@
             return;
         }
         
-        NSMutableArray *listObjects = [NSMutableArray array];
-        for (VNClassificationObservation *observation in request.results) {
-            if (observation.confidence > 0.3) {  // threshold
-                [listObjects addObject:observation];
-            }
+        // Just get first object
+        VNClassificationObservation *firstObj = [request.results firstObject];
+        if (firstObj.confidence > kRecognitionThreshold) {
+            // Found object
+            [self handleFoundObject:firstObj];
         }
         
-        NSString *resultText = @"";
-        for (VNClassificationObservation *observation in listObjects) {
-            NSLog(@"-------DETECT object:%@ threshold:%f", observation.identifier, observation.confidence);
-            resultText = [NSString stringWithFormat:@"%@ %@(%f)", resultText, observation.identifier, observation.confidence];
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            lbResult.text = resultText;
-        });
+//        NSMutableArray *listObjects = [NSMutableArray array];
+//        for (VNClassificationObservation *observation in request.results) {
+//            if (observation.confidence > kRecognitionThreshold) {
+//                [listObjects addObject:observation];
+//            }
+//        }
+//
+//        NSString *resultText = @"";
+//        for (VNClassificationObservation *observation in listObjects) {
+//            NSLog(@"-------DETECT object:%@ threshold:%f", observation.identifier, observation.confidence);
+//            resultText = [NSString stringWithFormat:@"%@ %@(%f)", resultText, observation.identifier, observation.confidence];
+//        }
+//
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            lbResult.text = resultText;
+//        });
     }];
     
     classificationRequest.imageCropAndScaleOption = VNImageCropAndScaleOptionCenterCrop;
@@ -216,6 +245,33 @@
         NSLog(@"--->ERROR: %@", error);
         return;
     }
+}
+
+#pragma mark - Handle found object
+- (void)handleFoundObject:(VNClassificationObservation *)obj {
+    // Found object
+    foundingObj = YES;
+    
+    // analyze string
+    NSString *fullName = obj.identifier;
+    NSArray *nameArray = [fullName componentsSeparatedByString:@", "];
+    
+    if (nameArray.count == 0) {
+        return;
+    }
+    // just get first name
+    NSString *identifiedObj = nameArray[0];
+    
+    [[SessionManager sharedInstance].identifiedObjects addObject:identifiedObj];
+    
+    // Show text on screen
+    dispatch_async(dispatch_get_main_queue(), ^{
+        lbResult.text = identifiedObj;
+    });
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        foundingObj = NO;
+    });
 }
 
 @end
