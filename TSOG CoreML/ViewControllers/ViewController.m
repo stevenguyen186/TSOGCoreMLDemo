@@ -262,7 +262,7 @@
     // just get first name
     NSString *identifiedObj = nameArray[0];
     
-    [[SessionManager sharedInstance].identifiedObjects addObject:identifiedObj];
+    [[SessionManager sharedInstance] addIdentifiedObject:identifiedObj];
     
     // Show text on screen
     dispatch_async(dispatch_get_main_queue(), ^{

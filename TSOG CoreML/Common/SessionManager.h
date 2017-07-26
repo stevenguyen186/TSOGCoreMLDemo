@@ -10,8 +10,10 @@
 
 @interface SessionManager : NSObject
 
-@property (nonatomic, strong) NSMutableArray *identifiedObjects;
+@property (nonatomic, strong) NSMutableDictionary *identifiedObjects;
 
 + (SessionManager *)sharedInstance;
+
+- (void)addIdentifiedObject:(NSString *)objString;
 
 @end
