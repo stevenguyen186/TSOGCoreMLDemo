@@ -38,16 +38,25 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    // Setup Camera
     [self setupCamera];
     
+    // Setup CoreML and Vision
     [self setupVisionAndCoreML];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
-    // Setup notification for device orientation change
-    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [notificationCenter addObserver:self
-                           selector:@selector(deviceOrientationDidChange:)
-                               name:UIDeviceOrientationDidChangeNotification object:nil];
+    // Setup observer
+    [self setupObserver];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    // Remove observer
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -63,6 +72,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Update preview layer when orientation changed
 - (void)deviceOrientationDidChange:(NSNotification *)notification {
     UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
     AVCaptureVideoOrientation newOrientation;
@@ -73,6 +83,7 @@
     } else if (deviceOrientation == UIDeviceOrientationLandscapeRight){
         newOrientation = AVCaptureVideoOrientationLandscapeLeft;
     } else {
+        // Do nothing
         return;
     }
     
@@ -83,7 +94,7 @@
     }
 }
 
-#pragma mark - Init part
+#pragma mark - Setup Camera
 - (void)setupCamera {
     // Init session
     session = [[AVCaptureSession alloc] init];
@@ -138,7 +149,9 @@
     [session startRunning];
 }
 
+#pragma mark - Setup Camera
 - (void)setupVisionAndCoreML {
+    // Read MLModel
     NSError *error;
     VNCoreMLModel *inceptionv3Model = [VNCoreMLModel modelForMLModel:[[[Inceptionv3 alloc] init] model] error:&error];
     if (error) {
@@ -147,7 +160,9 @@
         return;
     }
     
+    // Create request to classify object
     VNCoreMLRequest *classificationRequest = [[VNCoreMLRequest alloc] initWithModel:inceptionv3Model completionHandler:^(VNRequest * _Nonnull request, NSError * _Nullable error) {
+        // Handle the response
         if (error) {
             NSLog(@"--->ERROR: %@", error);
             return;
@@ -178,6 +193,14 @@
     
     classificationRequest.imageCropAndScaleOption = VNImageCropAndScaleOptionCenterCrop;
     visionRequests = @[classificationRequest];
+}
+
+#pragma mark - Setup Observer
+- (void)setupObserver {
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                           selector:@selector(deviceOrientationDidChange:)
+                               name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 #pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate
