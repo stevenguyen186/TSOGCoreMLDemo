@@ -116,10 +116,10 @@
 - (void)deviceOrientationDidChange:(NSNotification *)notification {
     UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
     AVCaptureVideoOrientation newOrientation;
-    if (deviceOrientation == UIDeviceOrientationPortrait) {
-        newOrientation = AVCaptureVideoOrientationPortrait;
-    } else if (deviceOrientation == UIDeviceOrientationLandscapeLeft) {
-//    if (deviceOrientation == UIDeviceOrientationLandscapeLeft){
+//    if (deviceOrientation == UIDeviceOrientationPortrait) {
+//        newOrientation = AVCaptureVideoOrientationPortrait;
+//    } else if (deviceOrientation == UIDeviceOrientationLandscapeLeft) {
+    if (deviceOrientation == UIDeviceOrientationLandscapeLeft){
         newOrientation = AVCaptureVideoOrientationLandscapeRight;
     } else if (deviceOrientation == UIDeviceOrientationLandscapeRight) {
         newOrientation = AVCaptureVideoOrientationLandscapeLeft;
@@ -414,7 +414,7 @@
     coinImage.alpha = 1.0;
     constraintTopCoinImage.constant = 0.0;
     [UIView animateWithDuration:0.3 animations:^{
-        constraintTopCoinImage.constant = 15.0;
+        constraintTopCoinImage.constant = 40.0;
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
         if (finished) {
