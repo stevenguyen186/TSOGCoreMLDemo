@@ -76,7 +76,9 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return [sortedKeys objectAtIndex:section];
+    NSString *key = [sortedKeys objectAtIndex:section];
+    NSArray *collection = [sortedObjectList objectForKey:key];
+    return [NSString stringWithFormat:@"%@ (%ld)", key, collection.count];
 }
 
 - (NSArray<NSString *> *)sectionIndexTitlesForTableView:(UITableView *)tableView {

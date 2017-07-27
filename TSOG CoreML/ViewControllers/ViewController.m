@@ -116,9 +116,12 @@
 - (void)deviceOrientationDidChange:(NSNotification *)notification {
     UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
     AVCaptureVideoOrientation newOrientation;
-    if (deviceOrientation == UIDeviceOrientationLandscapeLeft){
+    if (deviceOrientation == UIDeviceOrientationPortrait) {
+        newOrientation = AVCaptureVideoOrientationPortrait;
+    } else if (deviceOrientation == UIDeviceOrientationLandscapeLeft) {
+//    if (deviceOrientation == UIDeviceOrientationLandscapeLeft){
         newOrientation = AVCaptureVideoOrientationLandscapeRight;
-    } else if (deviceOrientation == UIDeviceOrientationLandscapeRight){
+    } else if (deviceOrientation == UIDeviceOrientationLandscapeRight) {
         newOrientation = AVCaptureVideoOrientationLandscapeLeft;
     } else {
         // Do nothing
