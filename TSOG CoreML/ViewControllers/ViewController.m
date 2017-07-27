@@ -26,9 +26,18 @@
     CAGradientLayer *gradientLayer;
     NSArray *visionRequests;
 
+    // Animation pointer
+    UIView *backgroundView;
+    UILabel *animatedLabel;
+    NSTimer *showAnimatedStringTimer;
+    NSTimer *hideAnimatedStringTimer;
+    
     __weak IBOutlet UILabel *lbResult;
     __weak IBOutlet UIView *previewView;
-    __weak IBOutlet UILabel *animatedText;
+    __weak IBOutlet UIImageView *coinImage;
+    __weak IBOutlet UIButton *btnShoppingCart;
+    __weak IBOutlet UILabel *lbCount;
+    __weak IBOutlet NSLayoutConstraint *constraintTopCoinImage;
     
     BOOL foundingObj;
 }
@@ -46,6 +55,9 @@
     
     // Setup CoreML and Vision
     [self setupVisionAndCoreML];
+    
+    // Setup View
+    [self setupView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -59,6 +71,18 @@
     [super viewDidAppear:animated];
     
     [self deviceOrientationDidChange:nil];
+    
+    if (![session isRunning]) {
+        [session startRunning];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    if ([session isRunning]) {
+        [session stopRunning];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -92,9 +116,7 @@
 - (void)deviceOrientationDidChange:(NSNotification *)notification {
     UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
     AVCaptureVideoOrientation newOrientation;
-    if (deviceOrientation == UIDeviceOrientationPortrait){
-        newOrientation = AVCaptureVideoOrientationPortrait;
-    } else if (deviceOrientation == UIDeviceOrientationLandscapeLeft){
+    if (deviceOrientation == UIDeviceOrientationLandscapeLeft){
         newOrientation = AVCaptureVideoOrientationLandscapeRight;
     } else if (deviceOrientation == UIDeviceOrientationLandscapeRight){
         newOrientation = AVCaptureVideoOrientationLandscapeLeft;
@@ -154,7 +176,6 @@
     [session addInput:cameraInput];
     [session addOutput:videoOutput];
     
-    // make sure we are in portrait mode
     AVCaptureConnection *connection = [videoOutput connectionWithMediaType:AVMediaTypeVideo];
     if ([connection isVideoOrientationSupported])
     {
@@ -208,6 +229,11 @@
     visionRequests = @[classificationRequest];
 }
 
+#pragma mark - Setup view
+- (void)setupView {
+    lbResult.text = kShowMeAnObject;
+}
+
 #pragma mark - Setup Observer
 - (void)setupObserver {
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
@@ -241,20 +267,18 @@
     NSArray *nameArray = [fullName componentsSeparatedByString:@", "];
     
     if (nameArray.count == 0) {
+        // No name -> Stop
         return;
     }
     // just get first name
     NSString *identifiedObj = [CommonTools capitalizeFirstLetterOnlyOfString:nameArray[0]];
     
+    // Add object to the Identified Object List
     if ([[SessionManager sharedInstance] addIdentifiedObject:identifiedObj]) {
         // Show text on screen
         dispatch_async(dispatch_get_main_queue(), ^{
-            lbResult.text = identifiedObj;
+            lbResult.text = kYouFoundIt;
             [self showAnimatedString:identifiedObj];
-        });
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            foundingObj = NO;
         });
     } else {
         foundingObj = NO;
@@ -262,33 +286,147 @@
 }
 
 - (void)showAnimatedString:(NSString *)animatedString {
+    // Current Window
     CGSize windowSize = [UIScreen mainScreen].bounds.size;
-    
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     
-    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, windowSize.width, windowSize.height)];
-    CGRect oldFrame = animatedText.frame;
-    UILabel *animatedLabel = [[UILabel alloc] initWithFrame:oldFrame];
-    animatedLabel.text = animatedString;
-    animatedLabel.textColor = [UIColor whiteColor];
-    [animatedLabel setFont:[UIFont boldSystemFontOfSize:30.0]];
-    [animatedLabel setMinimumScaleFactor:0.2];
+    // Create dimmed background
+    backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, windowSize.width, windowSize.height)];
+    // Create animated label
+    animatedLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    
+    // Attributed string (different colors)
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:animatedString];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithWhite:1.0 alpha:1.0] range:NSMakeRange(0,1)];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithWhite:1.0 alpha:0.6] range:NSMakeRange(1,animatedString.length - 1)];
+    animatedLabel.attributedText = attributedString;
+//    [animatedLabel setFont:[UIFont boldSystemFontOfSize:kAnimatedFontSize]];
+    [animatedLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:kAnimatedFontSize]];
+    [animatedLabel setMinimumScaleFactor:0.1];
     animatedLabel.textAlignment = NSTextAlignmentCenter;
+    animatedLabel.adjustsFontSizeToFitWidth = YES;
     [backgroundView addSubview:animatedLabel];
     [window addSubview:backgroundView];
     
     // animation
     backgroundView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.0];
     CGFloat minWidth = 50.0;
-    CGFloat maxWidth = 300.0;
-    animatedLabel.frame = CGRectMake((windowSize.width - minWidth)/2, (windowSize.height - 80.0)/2, minWidth, 80.0);
-    [UIView animateWithDuration:0.3 animations:^{
-        backgroundView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.7];
-        animatedLabel.frame = CGRectMake((windowSize.width - maxWidth)/2, (windowSize.height - 80.0)/2, maxWidth, 80.0);
+    CGFloat maxWidth = 400.0;
+    CGFloat textHeight = 80.0;
+//    animatedLabel.frame = CGRectMake((windowSize.width - minWidth)/2, (windowSize.height - textHeight)/2, minWidth, textHeight);
+    
+    animatedLabel.frame = CGRectMake((windowSize.width - maxWidth)/2, (windowSize.height - textHeight)/2, maxWidth, textHeight);
+    animatedLabel.transform = CGAffineTransformMakeScale(0.1, 0.1);
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        backgroundView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+//        animatedLabel.frame = CGRectMake((windowSize.width - maxWidth)/2, (windowSize.height - textHeight)/2, maxWidth, textHeight);
+        
+        animatedLabel.transform = CGAffineTransformMakeScale(1, 1);
+        
     } completion:^(BOOL finished) {
         if (finished) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            // Keep the text on the screen
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self hideAnimatedString];
+            });
+        }
+    }];
+}
+
+- (void)hideAnimatedString {
+    if (backgroundView && animatedLabel) {
+        [UIView animateWithDuration:0.5 animations:^{
+            backgroundView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.1];
+            animatedLabel.frame = CGRectMake(btnShoppingCart.frame.origin.x - (animatedLabel.frame.size.width)/2.0 + 20.0, btnShoppingCart.frame.origin.y - (animatedLabel.frame.size.height)/2.0, animatedLabel.frame.size.width, animatedLabel.frame.size.height);    // 20.0 is a gap space
+            animatedLabel.transform = CGAffineTransformMakeScale(0.1, 0.1);
+        } completion:^(BOOL finished) {
+            if (finished) {
+                // Hide the text
                 [backgroundView removeFromSuperview];
+                
+                // Increase counter
+                lbCount.text = [NSString stringWithFormat:@"%ld", [SessionManager sharedInstance].objCount];
+                
+                [self animateShoppingCart];
+            }
+        }];
+    } else {
+        // Remove animated view
+        [backgroundView removeFromSuperview];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            foundingObj = NO;
+        });
+    }
+}
+
+- (void)animateShoppingCart {
+    // Shake animation
+    CABasicAnimation *translateAnimation =
+    [CABasicAnimation animationWithKeyPath:@"position"];
+    [translateAnimation setDuration:0.05];
+    [translateAnimation setRepeatCount:4];
+    [translateAnimation setAutoreverses:YES];
+    [translateAnimation setFromValue:[NSValue valueWithCGPoint:
+                                      CGPointMake(btnShoppingCart.center.x - 3.0f, btnShoppingCart.center.y)]];
+    [translateAnimation setToValue:[NSValue valueWithCGPoint:
+                                    CGPointMake(btnShoppingCart.center.x + 3.0f, btnShoppingCart.center.y)]];
+    
+    // Rotate animation
+    CABasicAnimation *shakeAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    shakeAnimation.duration = 0.05;
+    shakeAnimation.additive = YES;
+    shakeAnimation.fillMode = kCAFillModeForwards;
+    [shakeAnimation setRepeatCount:4];
+    [shakeAnimation setAutoreverses:YES];
+    shakeAnimation.fromValue = [NSNumber numberWithFloat:degreesToRadians(-15)];
+    shakeAnimation.toValue = [NSNumber numberWithFloat:degreesToRadians(15)];
+    
+    [CATransaction setCompletionBlock:^{
+        // Shake back animation to original shape
+        CABasicAnimation *shakeBackAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+        shakeBackAnimation.duration = 0.0125;
+        shakeBackAnimation.fromValue = [NSNumber numberWithFloat:degreesToRadians(15)];
+        shakeBackAnimation.toValue = [NSNumber numberWithFloat:degreesToRadians(0)];
+        shakeBackAnimation.fillMode = kCAFillModeForwards;
+        [btnShoppingCart.layer addAnimation:shakeBackAnimation forKey:@"90rotation2"];
+        [CATransaction setCompletionBlock:^{
+            
+        }];
+    }];
+    
+    // Customization for all animations:
+    CAAnimationGroup *shakingGroup = [CAAnimationGroup animation];
+    shakingGroup.animations = @[translateAnimation, shakeAnimation];
+    [btnShoppingCart.layer addAnimation:shakingGroup forKey:@"shakingGroup"];
+    
+    [self showCoinThenHideIt];
+}
+
+- (void)showCoinThenHideIt {
+    coinImage.alpha = 1.0;
+    constraintTopCoinImage.constant = 0.0;
+    [UIView animateWithDuration:0.3 animations:^{
+        constraintTopCoinImage.constant = 15.0;
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        if (finished) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [UIView animateWithDuration:0.5 animations:^{
+                    coinImage.alpha = 0.0;
+                } completion:^(BOOL finished) {
+                    if (finished) {
+                        constraintTopCoinImage.constant = 0.0;
+                        
+                        // Reset bottom text
+                        lbResult.text = kShowMeAnObject;
+                        
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            // Let the app check object again
+                            foundingObj = NO;
+                        });
+                    }
+                }];
             });
         }
     }];

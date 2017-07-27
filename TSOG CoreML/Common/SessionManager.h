@@ -11,6 +11,7 @@
 @interface SessionManager : NSObject
 
 @property (nonatomic, strong) NSMutableDictionary *identifiedObjects;
+@property (nonatomic, assign) NSInteger objCount;
 
 + (SessionManager *)sharedInstance;
 

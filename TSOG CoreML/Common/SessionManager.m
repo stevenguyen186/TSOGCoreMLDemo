@@ -32,11 +32,13 @@
         } else {
             [collection setObject:objString forKey:objString];
             [self.identifiedObjects setObject:collection forKey:firstCharacter];
+            self.objCount++;
             return YES;
         }
     } else {
         collection = [NSMutableDictionary dictionaryWithObjectsAndKeys:objString, objString, nil];
         [self.identifiedObjects setObject:collection forKey:firstCharacter];
+        self.objCount++;
         return YES;
     }
 }
