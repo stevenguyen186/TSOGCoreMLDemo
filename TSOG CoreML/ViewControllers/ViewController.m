@@ -133,6 +133,10 @@
     {
         [previewLayerConnection setVideoOrientation:newOrientation];
     }
+    
+    if (backgroundView) {
+        backgroundView.frame = [UIScreen mainScreen].bounds;
+    }
 }
 
 #pragma mark - Setup Camera
