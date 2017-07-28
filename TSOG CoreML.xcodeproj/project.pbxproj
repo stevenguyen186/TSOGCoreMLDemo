@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C42D5B1F1F27833000D4A0BE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C42D5B1E1F27833000D4A0BE /* AppDelegate.m */; };
-		C42D5B251F27833000D4A0BE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C42D5B231F27833000D4A0BE /* Main.storyboard */; };
+		C42D5B251F27833000D4A0BE /* CoreMLDemo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C42D5B231F27833000D4A0BE /* CoreMLDemo.storyboard */; };
 		C42D5B271F27833000D4A0BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C42D5B261F27833000D4A0BE /* Assets.xcassets */; };
 		C42D5B2A1F27833000D4A0BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C42D5B281F27833000D4A0BE /* LaunchScreen.storyboard */; };
 		C42D5B2D1F27833000D4A0BE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C42D5B2C1F27833000D4A0BE /* main.m */; };
@@ -23,7 +23,7 @@
 		C42D5B1A1F27833000D4A0BE /* TSOG CoreML.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TSOG CoreML.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C42D5B1D1F27833000D4A0BE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C42D5B1E1F27833000D4A0BE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		C42D5B241F27833000D4A0BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C42D5B241F27833000D4A0BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/CoreMLDemo.storyboard; sourceTree = "<group>"; };
 		C42D5B261F27833000D4A0BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C42D5B291F27833000D4A0BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C42D5B2B1F27833000D4A0BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -79,7 +79,7 @@
 				C480268E1F28793C00B7EB01 /* ViewControllers */,
 				C42D5B1D1F27833000D4A0BE /* AppDelegate.h */,
 				C42D5B1E1F27833000D4A0BE /* AppDelegate.m */,
-				C42D5B231F27833000D4A0BE /* Main.storyboard */,
+				C42D5B231F27833000D4A0BE /* CoreMLDemo.storyboard */,
 				C42D5B261F27833000D4A0BE /* Assets.xcassets */,
 				C42D5B281F27833000D4A0BE /* LaunchScreen.storyboard */,
 				C42D5B2B1F27833000D4A0BE /* Info.plist */,
@@ -188,7 +188,7 @@
 			files = (
 				C42D5B2A1F27833000D4A0BE /* LaunchScreen.storyboard in Resources */,
 				C42D5B271F27833000D4A0BE /* Assets.xcassets in Resources */,
-				C42D5B251F27833000D4A0BE /* Main.storyboard in Resources */,
+				C42D5B251F27833000D4A0BE /* CoreMLDemo.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,12 +212,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		C42D5B231F27833000D4A0BE /* Main.storyboard */ = {
+		C42D5B231F27833000D4A0BE /* CoreMLDemo.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				C42D5B241F27833000D4A0BE /* Base */,
 			);
-			name = Main.storyboard;
+			name = CoreMLDemo.storyboard;
 			sourceTree = "<group>";
 		};
 		C42D5B281F27833000D4A0BE /* LaunchScreen.storyboard */ = {

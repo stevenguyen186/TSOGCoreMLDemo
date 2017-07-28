@@ -107,7 +107,7 @@
 
 #pragma mark - Button Handler
 - (IBAction)btnGotoListClicked:(id)sender {
-    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"CoreMLDemo" bundle:nil];
     IdentifiedObjectListViewController *iOLVC = [sb instantiateViewControllerWithIdentifier:@"IdentifiedObjectListViewController"];
     [self.navigationController pushViewController:iOLVC animated:YES];
 }
