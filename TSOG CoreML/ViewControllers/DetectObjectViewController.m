@@ -6,7 +6,7 @@
 //  Copyright © 2017 TheSchoolOfGames. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "DetectObjectViewController.h"
 #import "Inceptionv3.h"
 #import "CommonTools.h"
 #import "Constants.h"
@@ -17,7 +17,7 @@
 @import CoreML;
 @import Vision;
 
-@interface ViewController () <AVCaptureVideoDataOutputSampleBufferDelegate> {
+@interface DetectObjectViewController () <AVCaptureVideoDataOutputSampleBufferDelegate> {
     AVCaptureSession *session;
 
     dispatch_queue_t captureQueue;
@@ -44,7 +44,7 @@
 
 @end
 
-@implementation ViewController
+@implementation DetectObjectViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
